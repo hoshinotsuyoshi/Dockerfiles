@@ -12,3 +12,5 @@ RUN cd /usr/local/src/ && wget http://pyyaml.org/download/libyaml/yaml-0.1.5.tar
 
 RUN cd /usr/local/src && wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0.tar.gz && tar xvzf ruby-2.1.0.tar.gz && cd ruby-2.1.0 && ./configure --prefix=/usr/local && make && make install
 
+RUN cd /usr/local/src && wget http://redis.googlecode.com/files/redis-2.6.14.tar.gz && tar xvzf redis-2.6.14.tar.gz && cd redis-2.6.14 && make && make install
+
