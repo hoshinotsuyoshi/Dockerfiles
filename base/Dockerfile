@@ -14,3 +14,5 @@ RUN cd /usr/local/src && wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0
 
 RUN cd /usr/local/src && wget http://redis.googlecode.com/files/redis-2.6.14.tar.gz && tar xvzf redis-2.6.14.tar.gz && cd redis-2.6.14 && make && make install
 
+EXPOSE 6379
+CMD ["/usr/local/bin/redis-server"]
