@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /tablize && bundle exec rackup
+cd /app && bundle exec rackup
 

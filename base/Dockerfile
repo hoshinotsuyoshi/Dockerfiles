@@ -39,9 +39,12 @@ ADD redis/6379.conf /etc/redis/
 RUN gem install bundler 
 
 #app start
-RUN git clone https://github.com/hoshinotsuyoshi/tablize && cd tablize && bundle --path=vendor/bundle
+RUN git clone https://github.com/hoshinotsuyoshi/actresses-sinatra-resque-web app && cd app && bundle --path=vendor/bundle
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
+ENV AZURE_ACCOUNT_KEY $AZURE_ACCOUNT_KEY
+ENV ACTRESS_APP_DOMAIN $ACTRESS_APP_DOMAIN
+ENV ACTRESS_APP_PASSWORD $ACTRESS_APP_PASSWORD
 
 #supervisor
 RUN rm -f /etc/supervisord.conf
@@ -49,3 +52,4 @@ ADD supervisord.conf /etc/supervisord.conf
 
 EXPOSE 9292
 CMD ["/usr/bin/supervisord"]
+
