@@ -14,5 +14,29 @@ RUN cd /usr/local/src && wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0
 
 RUN cd /usr/local/src && wget http://redis.googlecode.com/files/redis-2.6.14.tar.gz && tar xvzf redis-2.6.14.tar.gz && cd redis-2.6.14 && make && make install
 
+#supervisor
+#RUN rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
+#RUN rpm -ivh http://apt.sw.be/redhat/el6/en/x86_64/rpmforge/RPMS/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
+RUN wget http://ftp-srv2.kddilabs.jp/Linux/distributions/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+RUN rpm -ivh epel-release-6-8.noarch.rpm
+RUN echo "enabled=1" >> /etc/yum.repos.d/epel.repo
+RUN yum -y install supervisor
+RUN rm -f /etc/supervisord.conf
+#ADD supervisord.conf /etc/supervisor.d/supervisord.conf
+ADD supervisord.conf /etc/supervisord.conf
+
+
+#redis-server start
+RUN echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf
+RUN sysctl vm.overcommit_memory=1
+RUN mkdir /etc/redis && mkdir /usr/local/redis
+RUN cp /usr/local/src/redis-2.6.14/utils/redis_init_script /etc/init.d/redis
+RUN cp -f /usr/local/src/redis-2.6.14/redis.conf /etc/redis.conf
+ADD redis/6379.conf /etc/redis/
+#CMD ["/usr/local/bin/redis-server","/etc/redis/6379.conf"]
+
+ADD redis/program-redis.conf /etc/supervisor.d/
+ENTRYPOINT [ "/launch.sh" ]
+ADD launch.sh /launch.sh
 EXPOSE 6379
-CMD ["/usr/local/bin/redis-server"]
+#CMD ["/usr/bin/supervisord"]
