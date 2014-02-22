@@ -35,20 +35,22 @@ RUN cp /usr/local/src/redis-2.6.14/utils/redis_init_script /etc/init.d/redis
 RUN cp -f /usr/local/src/redis-2.6.14/redis.conf /etc/redis.conf
 ADD redis/6379.conf /etc/redis/
 
-#app start
+#bundler install
 RUN gem install bundler 
 
 #app start
 RUN git clone https://github.com/hoshinotsuyoshi/actresses-sinatra-resque-web app && cd app && bundle --path=vendor/bundle
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
-ENV AZURE_ACCOUNT_KEY $AZURE_ACCOUNT_KEY
-ENV ACTRESS_APP_DOMAIN $ACTRESS_APP_DOMAIN
-ENV ACTRESS_APP_PASSWORD $ACTRESS_APP_PASSWORD
 
 #supervisor
 RUN rm -f /etc/supervisord.conf
 ADD supervisord.conf /etc/supervisord.conf
+
+#env
+ENV AZURE_ACCOUNT_KEY 
+ENV ACTRESS_APP_DOMAIN
+ENV ACTRESS_APP_PASSWORD
 
 EXPOSE 9292
 CMD ["/usr/bin/supervisord"]
