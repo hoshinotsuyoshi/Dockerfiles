@@ -1,8 +1,5 @@
 FROM hoshinotsuyoshi/base
 
-#httpd ready
-ADD httpd/httpd.conf /etc/httpd/conf/httpd.conf
-
 #redis-server ready
 RUN echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf
 RUN sysctl vm.overcommit_memory=1
@@ -19,6 +16,9 @@ RUN chmod +x /start.sh
 #supervisor
 RUN rm -f /etc/supervisord.conf
 ADD supervisord.conf /etc/supervisord.conf
+
+#httpd ready
+ADD httpd/httpd.conf /etc/httpd/conf/httpd.conf
 
 EXPOSE 9292 80
 CMD ["/usr/bin/supervisord"]
