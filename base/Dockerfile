@@ -2,14 +2,14 @@ FROM centos
 RUN yum -y install mysql-server
 RUN yum -y install httpd
 RUN yum -y install git
-RUN yum -y install readline-devel openssl-devel
-RUN yum -y install gcc
-RUN yum -y install gdbm-devel tcl-devel db4-devel
+
+# for ruby
+RUN yum -y install readline-devel openssl-devel gcc gdbm-devel tcl-devel db4-devel
 
 # zlib for ruby
 RUN cd /usr/local/src && wget http://zlib.net/zlib-1.2.8.tar.gz && tar xvzf zlib-1.2.8.tar.gz && cd zlib-1.2.8 && ./configure --prefix=/usr/local && make && make install
 
-# laml for ruby
+# yaml for ruby
 RUN cd /usr/local/src/ && wget http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz && tar zxvf yaml-0.1.5.tar.gz && cd yaml-0.1.5 && ./configure --prefix=/usr/local && make && make install
 
 # ruby
@@ -27,31 +27,10 @@ RUN rpm -ivh epel-release-6-8.noarch.rpm
 RUN echo "enabled=1" >> /etc/yum.repos.d/epel.repo
 RUN yum -y install supervisor
 
-#redis-server start
-RUN echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf
-RUN sysctl vm.overcommit_memory=1
-RUN mkdir /etc/redis && mkdir /usr/local/redis
-RUN cp /usr/local/src/redis-2.6.14/utils/redis_init_script /etc/init.d/redis
-RUN cp -f /usr/local/src/redis-2.6.14/redis.conf /etc/redis.conf
-ADD redis/6379.conf /etc/redis/
+#mongo
+ADD 10gen.repo /etc/yum.repos.d/10gen.repo
+RUN yum -y install mongo-10gen mongo-10gen-server
 
 #bundler install
-RUN gem install bundler 
-
-#app start
-RUN git clone https://github.com/hoshinotsuyoshi/actresses-sinatra-resque-web app && cd app && bundle --path=vendor/bundle
-ADD start.sh /start.sh
-RUN chmod +x /start.sh
-
-#supervisor
-RUN rm -f /etc/supervisord.conf
-ADD supervisord.conf /etc/supervisord.conf
-
-#env
-ENV AZURE_ACCOUNT_KEY 
-ENV ACTRESS_APP_DOMAIN
-ENV ACTRESS_APP_PASSWORD
-
-EXPOSE 9292
-CMD ["/usr/bin/supervisord"]
+RUN gem install bundler
 
