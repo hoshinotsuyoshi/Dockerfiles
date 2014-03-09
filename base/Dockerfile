@@ -34,3 +34,9 @@ RUN yum -y install mongo-10gen mongo-10gen-server
 #bundler install
 RUN gem install bundler
 
+# java
+RUN yum -y install java
+# jenkins
+RUN wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+RUN rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+RUN yum -y install jenkins
