@@ -18,7 +18,7 @@ RUN rm -f /etc/supervisord.conf
 ADD supervisord.conf /etc/supervisord.conf
 
 #httpd ready
-ADD httpd/httpd.conf  /etc/httpd/conf/httpd.conf
+ADD httpd/httpd.conf /etc/httpd/conf/httpd.conf
 
 EXPOSE 9292 80
 CMD ["/usr/bin/supervisord"]
