@@ -30,5 +30,5 @@ ADD supervisord.conf /etc/supervisord.conf
 #httpd ready
 ADD httpd/httpd.conf /etc/httpd/conf/httpd.conf
 
-EXPOSE 9292 80
+EXPOSE 9292 80 3000
 CMD ["/usr/bin/supervisord"]
