@@ -18,10 +18,16 @@ RUN yum -y install libxml2-dev libxslt rubygem-nokogiri
 RUN yum -y install curl-devel
 RUN yum -y install mysql-devel sqlite3 sqlite-devel
 RUN yum -y install libxml2 libxml2-devel libxslt libxslt-devel
-#RUN yum -y install ruby-devel
-RUN git clone https://github.com/fastladder/fastladder fastladder && cd fastladder && NOKOGIRI_USE_SYSTEM_LIBRARIES=1 bundle --path=vendor/bundle
+RUN git clone https://github.com/fastladder/fastladder fastladder && cd fastladder && echo "gem 'therubyracer', platforms: :ruby" >> Gemfile && NOKOGIRI_USE_SYSTEM_LIBRARIES=1 bundle --path=vendor/bundle
+RUN cd /fastladder && bundle exec rake setup && bundle exec rake db:setup && bundle exec rake db:setup #secret.rb and migration and setup
+RUN cd /fastladder && mv config/database.yml.mysql config/database.yml
+RUN sed -i 's/\/var\/run\/mysqld\/mysqld\.sock/\/var\/lib\/mysql\/mysql\.sock/g' config/database.yml
 ADD fastladder.sh /fastladder.sh
 RUN chmod +x /fastladder.sh
+
+#mysql ready
+RUN echo "NETWORKING=yes" >/etc/sysconfig/network
+RUN service mysql start
 
 #supervisor
 RUN rm -f /etc/supervisord.conf
