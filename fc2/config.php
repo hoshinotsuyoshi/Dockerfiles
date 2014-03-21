@@ -16,7 +16,7 @@ define('DB_DATABASE', 'test'); // dbのデータベース名
 define('DB_CHARSET',  'UTF8');            // MySQL 5.5未満の場合はUTF8を指定してください
 
 // サーバーの設定情報
-define('DOMAIN',        'fc2blog.webtext.pw');           // ドメイン名
+define('DOMAIN',        'fc2blog-tmp-sandbox.webtext.pw');           // ドメイン名
 define('PASSWORD_SALT', '206ea6e1c3edba4cbe8e3b365a19355a'); // 適当な英数字を入力してください
 
 // 設定クラス読み込み
