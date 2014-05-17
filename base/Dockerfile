@@ -4,6 +4,7 @@ RUN yum -y install httpd
 RUN yum -y install git
 
 # for ruby
+RUN yum -y install wget tar
 RUN yum -y install readline-devel openssl-devel gcc gdbm-devel tcl-devel db4-devel
 
 # zlib for ruby
