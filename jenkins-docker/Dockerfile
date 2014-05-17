@@ -9,7 +9,15 @@ RUN apt-get -y install jenkins
 # git, supervisor
 RUN apt-get -y install git-core supervisor
 RUN mkdir -p /var/log/supervisor
+
+# sshd
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN bash -c 'echo "root:root" | chpasswd'
+
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+EXPOSE 22
 
 EXPOSE 8080
 CMD ["/usr/bin/supervisord"]
