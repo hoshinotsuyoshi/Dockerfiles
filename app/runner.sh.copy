@@ -1,1 +1,0 @@
-docker run -e AZURE_ACCOUNT_KEY=hogehoge -e ACTRESS_APP_DOMAIN=hogehoge -e ACTRESS_APP_PASSWORD=hogehoge -d -p 80:9292 hoshinotsuyoshi/the_app
